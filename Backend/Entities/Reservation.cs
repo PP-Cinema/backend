@@ -5,7 +5,7 @@ namespace Backend.Entities
     public class Reservation
     {
         [Key] public int Id { get; set; }
-        [Required] public string Email{ get; set; }
+        [Required] public string Email { get; set; }
         [Required] public int NormalTickets { get; set; }
         [Required] public int DiscountedTickets { get; set; }
         [Required] public string FirstName { get; set; }
