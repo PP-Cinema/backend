@@ -29,41 +29,49 @@ namespace Backend.Data
             
             halls.Add(new Hall
             {
+                HallLetter = "A",
                 Seats = 100
             });
             
             halls.Add(new Hall
             {
+                HallLetter = "B",
                 Seats = 120
             });
             
             halls.Add(new Hall
             {
+                HallLetter = "C",
                 Seats = 80
             });
             
             halls.Add(new Hall
             {
+                HallLetter = "D",
                 Seats = 125
             });
             
             halls.Add(new Hall
             {
+                HallLetter = "E",
                 Seats = 130
             });
             
             halls.Add( new Hall
             {
+                HallLetter = "F",
                 Seats = 200
             });
             
             halls.Add( new Hall
             {
+                HallLetter = "G",
                 Seats = 120
             });
             
             halls.Add( new Hall
             {
+                HallLetter = "H",
                 Seats = 200
             });
             
