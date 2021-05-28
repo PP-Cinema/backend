@@ -10,6 +10,7 @@ namespace Backend.Entities
         [Required] public DateTime Date { get; set; }
         [Required] public float NormalPrice { get; set; }
         [Required] public float DiscountedPrice { get; set; }
+        [Required] public int Length { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
         [Required] public Hall Hall { get; set; }
         [Required] public Movie Movie { get; set; }
