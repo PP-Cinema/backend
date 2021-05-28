@@ -42,7 +42,7 @@ namespace Backend
             {
                 options.RequireHttpsMetadata = true;
                 options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters()
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidIssuer = jwtConfig.Issuer,
@@ -54,11 +54,11 @@ namespace Backend
                     ClockSkew = TimeSpan.FromMinutes(1)
                 };
             });
-            
+
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Backend", Version = "v1"}); });
 
-            services.AddTransient<IAdminRepository,AdminRepository>();
+            services.AddTransient<IAdminRepository, AdminRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,7 +76,7 @@ namespace Backend
             app.UseRouting();
 
             app.UseAuthentication();
-            
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

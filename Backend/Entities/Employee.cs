@@ -7,5 +7,6 @@ namespace Backend.Entities
         [Key] public int Id { get; set; }
         [Required] public string Login { get; set; }
         [Required] public string PasswordHash { get; set; }
+        public Admin Admin { get; set; }
     }
 }
