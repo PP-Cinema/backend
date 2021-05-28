@@ -5,6 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+	<PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
+    	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -12,10 +14,6 @@
         </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
 	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="DTO" />
     </ItemGroup>
 
 </Project>
