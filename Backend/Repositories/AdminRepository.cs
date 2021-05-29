@@ -38,9 +38,8 @@ namespace Backend.Repositories
 
         public async Task<Admin> GetAsync(string login)
         {
-            return await context.Admins.FirstOrDefaultAsync(a => 
-                a.Employee.Id == context.Employees.
-                    FirstOrDefault(e => e.Login == login).Id
+            return await context.Admins.FirstOrDefaultAsync(a =>
+                a.Employee.Id == context.Employees.FirstOrDefault(e => e.Login == login).Id
             );
         }
     }
