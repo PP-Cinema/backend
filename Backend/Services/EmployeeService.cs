@@ -75,11 +75,10 @@ namespace Backend.Services
             var roles = "";
             roles += await adminRepository.GetAsync(login) != null ? "Admin" : "";
             roles += "Employee";
-
             return roles;
         }
 
-        public async Task<IActionResult> CreateAsync(string login, string password, string role)
+        public async Task<IActionResult> CreateAsync(string login, string password, bool isAdmin)
         {
             var existingEmployee = await employeeRepository.GetAsync(login);
             if (existingEmployee != null)
@@ -96,7 +95,7 @@ namespace Backend.Services
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(password)
             });
 
-            if (role == "Admin") await adminRepository.AddAsync(new Admin {Employee = createdEmployee});
+            if (isAdmin) await adminRepository.AddAsync(new Admin {Employee = createdEmployee});
 
             context.Database?.CommitTransactionAsync();
 
