@@ -18,8 +18,8 @@ namespace Backend.Controllers
         {
             this.employeeService = employeeService;
         }
-        
-        
+
+
         [HttpPost]
         [Authorize(Roles = "AdminEmployee")]
         [ProducesResponseType(typeof(Employee), StatusCodes.Status201Created)]
@@ -27,9 +27,9 @@ namespace Backend.Controllers
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> CreateAsync([FromBody] EmployeeDto employeeDto)
         {
-            return await employeeService.CreateAsync(employeeDto.Login,employeeDto.Password,employeeDto.IsAdmin);
+            return await employeeService.CreateAsync(employeeDto.Login, employeeDto.Password, employeeDto.IsAdmin);
         }
-        
+
         [HttpPost("authenticate")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(AuthenticationDto), StatusCodes.Status200OK)]
@@ -39,7 +39,7 @@ namespace Backend.Controllers
         {
             return await employeeService.AuthenticateAsync(loginDto.Login, loginDto.Password);
         }
-        
+
         [HttpPost("refresh")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(AuthenticationDto), StatusCodes.Status200OK)]

@@ -14,11 +14,11 @@ namespace Backend
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                
+
                 var databaseInitializer = services.GetRequiredService<HallSeeder>();
                 databaseInitializer.SeedData();
             }
-            
+
             host.Run();
         }
 

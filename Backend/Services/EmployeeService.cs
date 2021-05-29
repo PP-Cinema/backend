@@ -33,13 +33,12 @@ namespace Backend.Services
         public async Task<IActionResult> AuthenticateAsync(string login, string password)
         {
             var employee = await employeeRepository.GetAsync(login);
-            
-            if (employee == null && !BCrypt.Net.BCrypt.Verify(password,employee.PasswordHash))
-            {
-                return new JsonResult(new ExceptionDto { Message = "Invalid Credentials"}) { StatusCode = 422};
-            }
-            
-            return new JsonResult(jwtManager.GenerateTokens(login,await GetRolesAsync(login),DateTime.Now)) {StatusCode = 200};
+
+            if (employee == null && !BCrypt.Net.BCrypt.Verify(password, employee.PasswordHash))
+                return new JsonResult(new ExceptionDto {Message = "Invalid Credentials"}) {StatusCode = 422};
+
+            return new JsonResult(jwtManager.GenerateTokens(login, await GetRolesAsync(login), DateTime.Now))
+                {StatusCode = 200};
         }
 
         public async Task<IActionResult> RefreshAsync(string accessToken, string refreshToken)
@@ -61,8 +60,9 @@ namespace Backend.Services
                 {
                     StatusCode = 422
                 };
-            
-            return new JsonResult(jwtManager.GenerateTokens(login,await GetRolesAsync(login),DateTime.Now)) {StatusCode = 200};
+
+            return new JsonResult(jwtManager.GenerateTokens(login, await GetRolesAsync(login), DateTime.Now))
+                {StatusCode = 200};
         }
 
         public async Task<string> GetRolesAsync(string login)
