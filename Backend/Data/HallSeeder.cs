@@ -25,55 +25,17 @@ namespace Backend.Data
 
         private IEnumerable<Hall> GetHalls()
         {
-            var halls = new List<Hall>();
-
-            halls.Add(new Hall
+            var halls = new List<Hall>
             {
-                HallLetter = "A",
-                Seats = 100
-            });
-
-            halls.Add(new Hall
-            {
-                HallLetter = "B",
-                Seats = 120
-            });
-
-            halls.Add(new Hall
-            {
-                HallLetter = "C",
-                Seats = 80
-            });
-
-            halls.Add(new Hall
-            {
-                HallLetter = "D",
-                Seats = 125
-            });
-
-            halls.Add(new Hall
-            {
-                HallLetter = "E",
-                Seats = 130
-            });
-
-            halls.Add(new Hall
-            {
-                HallLetter = "F",
-                Seats = 200
-            });
-
-            halls.Add(new Hall
-            {
-                HallLetter = "G",
-                Seats = 120
-            });
-
-            halls.Add(new Hall
-            {
-                HallLetter = "H",
-                Seats = 200
-            });
+                new Hall {HallLetter = "A", Seats = 100},
+                new Hall {HallLetter = "B", Seats = 120},
+                new Hall {HallLetter = "C", Seats = 80},
+                new Hall {HallLetter = "D", Seats = 125},
+                new Hall {HallLetter = "E", Seats = 130},
+                new Hall {HallLetter = "F", Seats = 200},
+                new Hall {HallLetter = "G", Seats = 120},
+                new Hall {HallLetter = "H", Seats = 200}
+            };
 
             return halls;
         }
