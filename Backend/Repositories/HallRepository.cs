@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repositories
 {
-    public class HallsRepository : IHallsRepository
+    public class HallsRepository : IHallRepository
     {
         private readonly DataContext context;
 

@@ -3,7 +3,7 @@ using Backend.Entities;
 
 namespace Backend.Repositories
 {
-    public interface IHallsRepository
+    public interface IHallRepository
     {
         Task<Hall> GetAsync(int id);
         Task<Hall> GetAsync(string letterCode);
