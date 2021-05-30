@@ -20,6 +20,7 @@ namespace Backend.Controllers
         }
         
         [HttpPost]
+        [Authorize(Roles = "AdminEmployee")]
         [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
@@ -38,6 +39,7 @@ namespace Backend.Controllers
         }
         
         [HttpDelete("{title}")]
+        [Authorize(Roles = "AdminEmployee")]
         [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]

@@ -70,7 +70,7 @@ namespace Backend.Services
             
             context.Database?.CommitTransactionAsync();
             
-            return new JsonResult(updatedMovie) {StatusCode = 201};
+            return new JsonResult(updatedMovie) {StatusCode = 200};
         }
 
         public async Task<IActionResult> DeleteAsync(string title)
@@ -88,7 +88,7 @@ namespace Backend.Services
             
             context.Database?.CommitTransactionAsync();
 
-            return new JsonResult(result) {StatusCode = 201};
+            return new JsonResult(result) {StatusCode = 200};
         }
     }
 }
