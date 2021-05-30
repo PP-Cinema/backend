@@ -66,6 +66,9 @@ namespace Backend
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddTransient<IEmployeeService, EmployeeService>();
 
+            services.AddTransient<IMovieRepository, MovieRepository>();
+            services.AddTransient<IMovieService, MovieService>();
+
             services.AddTransient<IJwtManager, JwtManager>();
             services.AddTransient<HallSeeder>();
         }
