@@ -21,7 +21,7 @@ namespace Backend.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "AdminEmployee")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(Employee), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]

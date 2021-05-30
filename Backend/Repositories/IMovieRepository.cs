@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Backend.Entities;
 
 namespace Backend.Repositories
@@ -9,7 +10,7 @@ namespace Backend.Repositories
         Task<Movie> UpdateAsync(Movie movie);
         Task<Movie> GetAsync(int id);
         Task<Movie> GetAsync(string title);
-        Task<Movie[]> GetContainsAsync(string title);
+        Task<IEnumerable<Movie>> GetContainsAsync(string title);
         Task<bool> DeleteAsync(int id);
     }
 }

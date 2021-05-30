@@ -1,7 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Backend.Entities;
 using Backend.Data;
+using Backend.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repositories
@@ -38,12 +39,12 @@ namespace Backend.Repositories
 
         public async Task<Movie> GetAsync(string title)
         {
-            return await context.Movies.FirstOrDefaultAsync(m=>m.Title == title);
+            return await context.Movies.FirstOrDefaultAsync(m => m.Title == title);
         }
 
-        public async Task<Movie[]> GetContainsAsync(string title)
+        public async Task<IEnumerable<Movie>> GetContainsAsync(string title)
         {
-            return await context.Movies.Where(m => m.Title.Contains(title)).ToArrayAsync();
+            return await context.Movies.Where(m => m.Title.Contains(title)).ToListAsync();
         }
 
         public async Task<bool> DeleteAsync(int id)

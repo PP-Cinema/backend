@@ -18,9 +18,9 @@ namespace Backend.Controllers
         {
             this.movieService = movieService;
         }
-        
+
         [HttpPost]
-        [Authorize(Roles = "AdminEmployee")]
+        [Authorize(Roles = "Admin,Employee")]
         [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
@@ -28,25 +28,24 @@ namespace Backend.Controllers
         {
             return await movieService.CreateAsync(movieDto.Title, movieDto.Length, movieDto.Description);
         }
-        
-        [HttpGet("{title}")]
-        [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetAsync(string title)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            return await movieService.GetAsync(title);
-        }
-        
-        [HttpDelete("{title}")]
-        [Authorize(Roles = "AdminEmployee")]
-        [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> DeleteAsync(string title)
-        {
-            return await movieService.DeleteAsync(title);
+            return await movieService.GetAsync(id);
         }
 
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Employee")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            return await movieService.DeleteAsync(id);
+        }
     }
 }

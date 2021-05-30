@@ -69,12 +69,11 @@ namespace Backend.Services
         {
             if (string.IsNullOrEmpty(login)) throw new ArgumentException("Login cannot be empty");
 
-            var employee = employeeRepository.GetAsync(login);
+            var employee = await employeeRepository.GetAsync(login);
             if (employee == null) throw new ArgumentException("Employee with given login does not exist");
 
             var roles = "";
-            roles += await adminRepository.GetAsync(login) != null ? "Admin" : "";
-            roles += "Employee";
+            roles += await adminRepository.GetAsync(login) != null ? "Admin" : "Employee";
             return roles;
         }
 
