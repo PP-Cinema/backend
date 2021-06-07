@@ -370,3 +370,5 @@ Backend/Migrations/*
 =======
 Backend/Migrations/*
 >>>>>>> Stashed changes
+
+Backend/wwwroot/*
