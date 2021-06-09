@@ -13,7 +13,7 @@ namespace Backend.Repositories
         {
             this.context = context;
         }
-        
+
         public async Task<Hall> GetAsync(int id)
         {
             return await context.Halls.FindAsync(id);

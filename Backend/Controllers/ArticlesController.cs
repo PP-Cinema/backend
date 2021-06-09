@@ -11,7 +11,7 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ArticlesController: ControllerBase
+    public class ArticlesController : ControllerBase
     {
         private readonly IArticleService articleService;
 
@@ -25,7 +25,7 @@ namespace Backend.Controllers
         [ProducesResponseType(typeof(Article), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> CreateArticle([FromForm] ArticleDto articleDto)
+        public async Task<IActionResult> CreateArticleAsync([FromForm] ArticleDto articleDto)
         {
             return await articleService.CreateAsync(articleDto.Title, articleDto.Abstract, articleDto.File, Request);
         }
@@ -34,18 +34,18 @@ namespace Backend.Controllers
         [ProducesResponseType(typeof(Article), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetArticle(int id)
+        public async Task<IActionResult> GetArticleAsync(int id)
         {
-            return await articleService.Get(id);
+            return await articleService.GetAsync(id);
         }
-        
+
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Article>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetArticle()
+        public async Task<IActionResult> GetArticlesAsync()
         {
-            return await articleService.GetAll();
+            return await articleService.GetAllAsync();
         }
     }
 }

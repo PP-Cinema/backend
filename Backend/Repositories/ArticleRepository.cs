@@ -14,7 +14,7 @@ namespace Backend.Repositories
         {
             this.context = context;
         }
-        
+
         public async Task<Article> AddAsync(Article article)
         {
             var result = await context.Articles.AddAsync(article);

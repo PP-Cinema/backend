@@ -7,7 +7,7 @@ namespace Backend.Services
     public interface IArticleService
     {
         Task<IActionResult> CreateAsync(string title, string articleAbstract, IFormFile file, HttpRequest request);
-        Task<IActionResult> Get(int id);
-        Task<IActionResult> GetAll();
+        Task<IActionResult> GetAsync(int id);
+        Task<IActionResult> GetAllAsync();
     }
 }

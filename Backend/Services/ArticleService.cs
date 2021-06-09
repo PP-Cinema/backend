@@ -21,26 +21,23 @@ namespace Backend.Services
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> CreateAsync(string title, string articleAbstract, IFormFile file, HttpRequest request)
+        public async Task<IActionResult> CreateAsync(string title, string articleAbstract, IFormFile file,
+            HttpRequest request)
         {
-            if (file == null)
-            {
-                return new JsonResult(new ExceptionDto{ Message = "File not found"}){ StatusCode = 422};
-            };
+            if (file == null) return new JsonResult(new ExceptionDto {Message = "File not found"}) {StatusCode = 422};
+            ;
 
             var extension = Path.GetExtension(file.FileName);
 
             if (string.IsNullOrEmpty(extension) || extension != ".pdf")
-            {
-                return new JsonResult(new ExceptionDto{ Message = "Wrong file extension"}){ StatusCode = 422};
-            }
+                return new JsonResult(new ExceptionDto {Message = "Wrong file extension"}) {StatusCode = 422};
 
             var fileName = Path.GetRandomFileName();
             var path = Path.Combine(webHostEnvironment.WebRootPath, "articles", fileName + extension);
 
             await using var fileStream = new FileStream(path, FileMode.Create);
             await file.CopyToAsync(fileStream);
-            
+
             var article = new Article
             {
                 Abstract = articleAbstract,
@@ -53,17 +50,17 @@ namespace Backend.Services
             return new JsonResult(await articleRepository.AddAsync(article)) {StatusCode = 201};
         }
 
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
             var existingArticle = await articleRepository.GetAsync(id);
-            return existingArticle == null ? 
-                new JsonResult(new ExceptionDto{ Message = "No article was found"}){ StatusCode = 422} : 
-                    new JsonResult(existingArticle){StatusCode = 200};
+            return existingArticle == null
+                ? new JsonResult(new ExceptionDto {Message = "No article was found"}) {StatusCode = 422}
+                : new JsonResult(existingArticle) {StatusCode = 200};
         }
 
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            return new JsonResult(await articleRepository.GetAllAsync()){StatusCode = 200};
+            return new JsonResult(await articleRepository.GetAllAsync()) {StatusCode = 200};
         }
     }
 }
