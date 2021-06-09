@@ -2,7 +2,7 @@
 using System.Linq;
 using Backend.Entities;
 
-namespace Backend.Data
+namespace Backend.Data.DataSeeders
 {
     public class HallSeeder
     {

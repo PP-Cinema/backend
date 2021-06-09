@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using Backend.Data;
+using Backend.Data.DataSeeders;
 using Backend.Repositories;
 using Backend.Services;
 using Backend.Utilities;
@@ -74,8 +75,12 @@ namespace Backend
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<IArticleService, ArticleService>();
 
-            services.AddTransient<IJwtManager, JwtManager>();
             services.AddTransient<HallSeeder>();
+            services.AddTransient<EmployeeSeeder>();
+            services.AddTransient<DbSeeder>();
+
+
+            services.AddTransient<IJwtManager, JwtManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,7 +106,7 @@ namespace Backend
                     Path.Combine(env.WebRootPath, "articles")),
                 RequestPath = "/articles"
             });
-            
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
