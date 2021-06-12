@@ -10,7 +10,7 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MoviesController
+    public class MoviesController : ControllerBase
     {
         private readonly IMovieService movieService;
 
@@ -24,9 +24,9 @@ namespace Backend.Controllers
         [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> CreateAsync([FromBody] MovieDto movieDto)
+        public async Task<IActionResult> CreateAsync([FromForm] MovieDto movieDto)
         {
-            return await movieService.CreateAsync(movieDto.Title, movieDto.Length, movieDto.Description);
+            return await movieService.CreateAsync(movieDto.Title, movieDto.Length, movieDto.Description, movieDto.PosterFile, Request);
         }
 
         [HttpGet("{id:int}")]

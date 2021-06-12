@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <Folder Include="wwwroot\articles" />
+      <Folder Include="wwwroot\posters" />
     </ItemGroup>
 
 </Project>

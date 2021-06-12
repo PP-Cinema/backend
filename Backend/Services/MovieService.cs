@@ -1,12 +1,13 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Backend.Data;
 using Backend.DTO;
 using Backend.Entities;
 using Backend.Repositories;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend.Services
 {
@@ -14,15 +15,24 @@ namespace Backend.Services
     {
         private readonly DataContext context;
         private readonly IMovieRepository movieRepository;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public MovieService(IMovieRepository movieRepository, DataContext context)
+        public MovieService(DataContext context, IMovieRepository movieRepository, IWebHostEnvironment webHostEnvironment)
         {
-            this.movieRepository = movieRepository;
             this.context = context;
+            this.movieRepository = movieRepository;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> CreateAsync(string title, int length, string description)
+        public async Task<IActionResult> CreateAsync(string title, int length, string description, IFormFile posterFile,
+            HttpRequest request)
         {
+            if (posterFile == null) return new JsonResult(new ExceptionDto {Message = "File not found"}) {StatusCode = 422};
+            
+            var extension = Path.GetExtension(posterFile.FileName);
+            if (string.IsNullOrEmpty(extension) || !(extension == ".png" || extension == ".jpg"))
+                return new JsonResult(new ExceptionDto {Message = "Wrong file extension"}) {StatusCode = 422};
+
             var existingMovie = await movieRepository.GetAsync(title);
             if (existingMovie != null)
                 return new JsonResult(new ExceptionDto {Message = "Movie with given title already exists"})
@@ -38,11 +48,19 @@ namespace Backend.Services
 
             context.Database?.BeginTransactionAsync();
 
+            var fileName = Path.GetRandomFileName();
+            var path = Path.Combine(webHostEnvironment.WebRootPath, "posters", fileName + extension);
+            
+            await using var fileStream = new FileStream(path, FileMode.Create);
+            await posterFile.CopyToAsync(fileStream);
+            
             var createdMovie = await movieRepository.AddAsync(new Movie
             {
                 Title = title,
                 Length = length,
-                Description = description
+                Description = description,
+                PosterFilePath = request.Scheme + "://" + request.Host + "/posters/" + fileName +
+                                 extension
             });
 
             context.Database?.CommitTransactionAsync();
