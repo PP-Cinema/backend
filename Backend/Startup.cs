@@ -106,6 +106,20 @@ namespace Backend
                     Path.Combine(env.WebRootPath, "articles")),
                 RequestPath = "/articles"
             });
+            
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.WebRootPath, "posters")),
+                RequestPath = "/posters"
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.WebRootPath, "posters")),
+                RequestPath = "/posters"
+            });
 
             app.UseHttpsRedirection();
 

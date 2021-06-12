@@ -148,6 +148,12 @@ namespace Backend.Services
             context.Database?.BeginTransactionAsync();
 
             var result = await movieRepository.DeleteAsync(existingMovie.Id);
+            var fileName = existingMovie.PosterFilePath.Split('/').Last();
+            var filePath = Path.Combine(webHostEnvironment.WebRootPath, "posters", fileName);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
 
             context.Database?.CommitTransactionAsync();
 
