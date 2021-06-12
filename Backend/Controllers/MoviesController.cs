@@ -29,7 +29,7 @@ namespace Backend.Controllers
             return await movieService.CreateAsync(movieDto.Title, movieDto.Length, movieDto.Description);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
@@ -37,8 +37,26 @@ namespace Backend.Controllers
         {
             return await movieService.GetAsync(id);
         }
+        
+        [HttpPost("page")]
+        [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> GetAsyncPage([FromBody] SearchDto searchDto)
+        {
+            return await movieService.GetPageAsync(searchDto.Page, searchDto.ItemsPerPage, searchDto.SearchString);
+        }
+        
+        [HttpPost("page/count")]
+        [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> GetAsyncCount([FromBody] SearchDto searchDto)
+        {
+            return await movieService.GetPageCountAsync(searchDto.ItemsPerPage, searchDto.SearchString);
+        }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin,Employee")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]

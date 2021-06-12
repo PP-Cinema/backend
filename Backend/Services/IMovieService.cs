@@ -7,6 +7,8 @@ namespace Backend.Services
     {
         public Task<IActionResult> CreateAsync(string title, int length, string description);
         public Task<IActionResult> GetAsync(int id);
+        public Task<IActionResult> GetPageAsync(int page, int itemsPerPage, string searchString);
+        public Task<IActionResult> GetPageCountAsync(int itemsPerPage, string searchString);
         public Task<IActionResult> UpdateAsync(int id, string newTitle, int newLength, string newDescription);
         public Task<IActionResult> DeleteAsync(int id);
     }
