@@ -17,5 +17,6 @@ namespace Backend.Data
         public DbSet<Performance> Performances { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<Show> Shows { get; set; }
     }
 }

@@ -76,6 +76,11 @@ namespace Backend
 
             services.AddTransient<IJwtManager, JwtManager>();
             services.AddTransient<HallSeeder>();
+
+            services.AddTransient<IHallRepository, HallsRepository>();
+
+            services.AddTransient<IShowRepository, ShowRepository>();
+            services.AddTransient<IShowService, ShowService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
