@@ -79,8 +79,8 @@ namespace Backend
 
             services.AddTransient<IHallRepository, HallsRepository>();
 
-            services.AddTransient<IShowRepository, ShowRepository>();
-            services.AddTransient<IShowService, ShowService>();
+            services.AddTransient<IPerformanceRepository, PerformanceRepository>();
+            services.AddTransient<IPerformanceService, PerformanceService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,26 +8,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Services
 {
-    public class ShowService: IShowService
+    public class PerformanceService: IPerformanceService
     {
         private readonly DataContext context;
-        private readonly IShowRepository showRepository;
+        private readonly IPerformanceRepository performanceRepository;
         private readonly IHallRepository hallRepository;
         private readonly IMovieRepository movieRepository;
 
-        public ShowService(DataContext context, IShowRepository showRepository, IHallRepository hallRepository, IMovieRepository movieRepository)
+        public PerformanceService(DataContext context, IPerformanceRepository performanceRepository, IHallRepository hallRepository, IMovieRepository movieRepository)
         {
             this.context = context;
-            this.showRepository = showRepository;
+            this.performanceRepository = performanceRepository;
             this.hallRepository = hallRepository;
             this.movieRepository = movieRepository;
         }
         
-        public async Task<IActionResult> CreateAsync(DateTime time, decimal price, string hall, string movie)
+        public async Task<IActionResult> CreateAsync(
+            DateTime time, float normalPrice, float discountedPrice, int length, string hall, string movie)
         {
-            var existingShow = await showRepository.GetAsync(movie);
-            if (existingShow != null)
-                return new JsonResult(new ExceptionDto {Message = "Show with given movie title already exists"})
+            var existingPerformance = await performanceRepository.GetAsync(movie);
+            if (existingPerformance != null)
+                return new JsonResult(new ExceptionDto {Message = "Performance with given movie title already exists"})
                 {
                     StatusCode = 422
                 };
@@ -46,36 +47,38 @@ namespace Backend.Services
                     StatusCode = 422
                 };
             
-            var show = new Show()
+            var performance = new Performance()
             {
-                Time = time,
-                Price = price,
+                Date = time,
+                NormalPrice = normalPrice,
+                DiscountedPrice = discountedPrice,
+                Length = length,
                 Hall = existingHall,
                 Movie = existingMovie
             };
             
-            return new JsonResult(await showRepository.AddAsync(show)) {StatusCode = 201};
+            return new JsonResult(await performanceRepository.AddAsync(performance)) {StatusCode = 201};
         }
 
         public async Task<IActionResult> GetAsync(int id)
         {
-            var existingShow = await showRepository.GetAsync(id);
-            return existingShow == null ?
-                new JsonResult(new ExceptionDto{ Message = "No show was found"}){ StatusCode = 422} : 
-                new JsonResult(existingShow){StatusCode = 200};
+            var existingPerformance = await performanceRepository.GetAsync(id);
+            return existingPerformance == null ?
+                new JsonResult(new ExceptionDto{ Message = "No performance was found"}){ StatusCode = 422} : 
+                new JsonResult(existingPerformance){StatusCode = 200};
         }
 
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var existingShow = await showRepository.GetAsync(id);
-            if (existingShow == null)
-                return new JsonResult(new ExceptionDto {Message = "Show with given movie title does not exist"})
+            var existingPerformance = await performanceRepository.GetAsync(id);
+            if (existingPerformance == null)
+                return new JsonResult(new ExceptionDto {Message = "Performance with given movie title does not exist"})
                 {
                     StatusCode = 422
                 };
             
             context.Database?.BeginTransactionAsync();
-            var result = await showRepository.DeleteAsync(existingShow.Id);
+            var result = await performanceRepository.DeleteAsync(existingPerformance.Id);
             context.Database?.CommitTransactionAsync();
             
             return new JsonResult(result) {StatusCode = 200};

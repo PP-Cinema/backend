@@ -3,12 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Backend.DTO
 {
-    public class ShowDto
+    public class PerformanceDto
     {
         [Required(ErrorMessage = "Time is required")]
-        public DateTime Time { get; set; }
+        public DateTime Date { get; set; }
         [Required(ErrorMessage = "Price is required")]
-        public decimal Price { get; set; }
+        public float NormalPrice { get; set; }
+        [Required(ErrorMessage = "Discounted price is required")]
+        public float DiscountedPrice { get; set; }
+        [Required(ErrorMessage = "Length is required")]
+        public int Length { get; set; }
         [Required(ErrorMessage = "Hall is required")]
         public string Hall { get; set; }
         [Required(ErrorMessage = "Movie is required")]

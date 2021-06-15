@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Services
 {
-    public interface IShowService
+    public interface IPerformanceService
     {
-        Task<IActionResult> CreateAsync(DateTime time, decimal price, string hall, string movie);
+        Task<IActionResult> CreateAsync(
+            DateTime time, float normalPrice, float discountedPrice, int length, string hall, string movie);
         Task<IActionResult> GetAsync(int id);
         public Task<IActionResult> DeleteAsync(int id);
     }
