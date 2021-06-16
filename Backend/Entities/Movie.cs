@@ -9,6 +9,8 @@ namespace Backend.Entities
         [Required] public string Title { get; set; }
         [Required] public int Length { get; set; }
         public string Description { get; set; }
+        [Required]
+        public string PosterFilePath { get; set; }
         public ICollection<Performance> Performances { get; set; }
     }
 }

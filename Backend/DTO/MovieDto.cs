@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend.DTO
 {
@@ -11,5 +12,8 @@ namespace Backend.DTO
         public int Length { get; set; }
 
         public string Description { get; set; }
+        
+        [Required(ErrorMessage = "File is required")]
+        public IFormFile PosterFile { get; set; }
     }
 }
