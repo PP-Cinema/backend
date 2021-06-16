@@ -30,11 +30,6 @@ namespace Backend.Repositories
             return await context.Performances.FindAsync(id);
         }
 
-        public async Task<Performance> GetAsync(string movie)
-        {
-            return await context.Performances.FirstOrDefaultAsync(performance => performance.Movie.Title == movie);
-        }
-
         public async Task<bool> DeleteAsync(int id)
         {
             var performanceToDelete = await context.Performances.FindAsync(id);

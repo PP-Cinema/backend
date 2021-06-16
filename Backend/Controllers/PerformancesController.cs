@@ -26,8 +26,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> CreatePerformance(PerformanceDto performanceDto)
         {
             return await performanceService.CreateAsync(performanceDto.Date,
-                performanceDto.NormalPrice, performanceDto.DiscountedPrice,
-                performanceDto.Length, performanceDto.Hall, performanceDto.Movie);
+                performanceDto.NormalPrice, performanceDto.DiscountedPrice,performanceDto.Hall, performanceDto.Movie);
         }
 
         [HttpGet("{id}")]

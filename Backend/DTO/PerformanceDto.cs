@@ -11,8 +11,6 @@ namespace Backend.DTO
         public float NormalPrice { get; set; }
         [Required(ErrorMessage = "Discounted price is required")]
         public float DiscountedPrice { get; set; }
-        [Required(ErrorMessage = "Length is required")]
-        public int Length { get; set; }
         [Required(ErrorMessage = "Hall is required")]
         public string Hall { get; set; }
         [Required(ErrorMessage = "Movie is required")]

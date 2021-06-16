@@ -24,15 +24,8 @@ namespace Backend.Services
         }
         
         public async Task<IActionResult> CreateAsync(
-            DateTime time, float normalPrice, float discountedPrice, int length, string hall, string movie)
+            DateTime time, float normalPrice, float discountedPrice, string hall, string movie)
         {
-            var existingPerformance = await performanceRepository.GetAsync(movie);
-            if (existingPerformance != null)
-                return new JsonResult(new ExceptionDto {Message = "Performance with given movie title already exists"})
-                {
-                    StatusCode = 422
-                };
-            
             var existingHall = await hallRepository.GetAsync(hall);
             if (existingHall == null)
                 return new JsonResult(new ExceptionDto {Message = "Hall with given letter does not exist"})
@@ -46,18 +39,26 @@ namespace Backend.Services
                 {
                     StatusCode = 422
                 };
-            
+
             var performance = new Performance()
             {
                 Date = time,
                 NormalPrice = normalPrice,
                 DiscountedPrice = discountedPrice,
-                Length = length,
+                Length = existingMovie.Length,
                 Hall = existingHall,
                 Movie = existingMovie
             };
             
-            return new JsonResult(await performanceRepository.AddAsync(performance)) {StatusCode = 201};
+            var result = await performanceRepository.AddAsync(performance);
+
+            existingHall.Performances.Add(result);
+            await hallRepository.UpdateAsync(existingHall);
+            
+            existingMovie.Performances.Add(result);
+            await movieRepository.UpdateAsync(existingMovie);
+
+            return new JsonResult(result) {StatusCode = 201};
         }
 
         public async Task<IActionResult> GetAsync(int id)
