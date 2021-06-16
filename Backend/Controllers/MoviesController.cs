@@ -5,6 +5,7 @@ using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Backend.Controllers
 {
@@ -38,22 +39,17 @@ namespace Backend.Controllers
             return await movieService.GetAsync(id);
         }
         
-        [HttpPost("page")]
+        [HttpGet]
         [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetAsyncPage([FromBody] SearchDto searchDto)
+        public async Task<IActionResult> GetAsyncPage([FromQuery] int page = -1, [FromQuery] int itemsPerPage = 10, [FromQuery] string search = "")
         {
-            return await movieService.GetPageAsync(searchDto.Page, searchDto.ItemsPerPage, searchDto.SearchString);
-        }
-        
-        [HttpPost("page/count")]
-        [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetAsyncCount([FromBody] SearchDto searchDto)
-        {
-            return await movieService.GetPageCountAsync(searchDto.ItemsPerPage, searchDto.SearchString);
+            if (page < 0)
+            {
+                return await movieService.GetPageCountAsync(itemsPerPage, search);
+            }
+            return await movieService.GetPageAsync(page, itemsPerPage, search);
         }
 
         [HttpDelete("{id:int}")]
