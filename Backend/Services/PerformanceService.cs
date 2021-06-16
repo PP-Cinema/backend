@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Backend.Data;
 using Backend.DTO;
@@ -49,16 +50,23 @@ namespace Backend.Services
                 Hall = existingHall,
                 Movie = existingMovie
             };
-            
-            var result = await performanceRepository.AddAsync(performance);
 
-            existingHall.Performances.Add(result);
-            await hallRepository.UpdateAsync(existingHall);
-            
-            existingMovie.Performances.Add(result);
+            if (existingMovie.Performances == null)
+            {
+                existingMovie.Performances = new List<Performance>();
+            }
+            existingMovie.Performances.Add(performance);
+
+            if (existingHall.Performances == null)
+            {
+                existingHall.Performances = new List<Performance>();                
+            }
+            existingHall.Performances.Add(performance);
+
             await movieRepository.UpdateAsync(existingMovie);
+            await hallRepository.UpdateAsync(existingHall);
 
-            return new JsonResult(result) {StatusCode = 201};
+            return new JsonResult(performance) {StatusCode = 201};
         }
 
         public async Task<IActionResult> GetAsync(int id)
