@@ -1,4 +1,4 @@
-using Backend.Data;
+using Backend.Data.DataSeeders;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,7 +15,7 @@ namespace Backend
             {
                 var services = scope.ServiceProvider;
 
-                var databaseInitializer = services.GetRequiredService<HallSeeder>();
+                var databaseInitializer = services.GetRequiredService<DbSeeder>();
                 databaseInitializer.SeedData();
             }
 
@@ -25,7 +25,11 @@ namespace Backend
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseWebRoot("wwwroot");
+                });
         }
     }
 }

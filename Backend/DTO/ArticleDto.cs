@@ -7,8 +7,10 @@ namespace Backend.DTO
     {
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
+
         [Required(ErrorMessage = "Abstract is required")]
         public string Abstract { get; set; }
+
         [Required(ErrorMessage = "File is required")]
         public IFormFile File { get; set; }
     }

@@ -88,7 +88,7 @@ namespace Backend.Services
         {
             var existingMovie = await movieRepository.GetAsync(id);
             if (existingMovie == null)
-                return new JsonResult(new ExceptionDto {Message = "Movie with given id does not exists"})
+                return new JsonResult(new ExceptionDto {Message = "Movie with given id does not exist"})
                 {
                     StatusCode = 422
                 };
