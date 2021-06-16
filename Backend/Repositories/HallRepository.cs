@@ -14,6 +14,15 @@ namespace Backend.Repositories
             this.context = context;
         }
 
+
+        public async Task<Hall> UpdateAsync(Hall hall)
+        {
+            var result = context.Halls.Update(hall);
+            await context.SaveChangesAsync();
+
+            return result.Entity;
+        }
+
         public async Task<Hall> GetAsync(int id)
         {
             return await context.Halls.FindAsync(id);

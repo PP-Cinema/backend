@@ -5,7 +5,10 @@ namespace Backend.Entities
 {
     public class Admin
     {
-        [Key] public int Id { get; set; }
-        [ForeignKey("EmployeeId")] public Employee Employee { get; set; }
+        [Key]
+        public int EmployeeId { get; set; }
+        
+        [ForeignKey("EmployeeId")] 
+        public Employee Employee { get; set; }
     }
 }

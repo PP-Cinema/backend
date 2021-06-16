@@ -74,7 +74,12 @@ namespace Backend
 
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<IArticleService, ArticleService>();
+            
+            services.AddTransient<IHallRepository, HallsRepository>();
 
+            services.AddTransient<IPerformanceRepository, PerformanceRepository>();
+            services.AddTransient<IPerformanceService, PerformanceService>();
+          
             services.AddTransient<HallSeeder>();
             services.AddTransient<EmployeeSeeder>();
             services.AddTransient<DbSeeder>();
@@ -105,6 +110,20 @@ namespace Backend
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(env.WebRootPath, "articles")),
                 RequestPath = "/articles"
+            });
+            
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.WebRootPath, "posters")),
+                RequestPath = "/posters"
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.WebRootPath, "posters")),
+                RequestPath = "/posters"
             });
 
             app.UseHttpsRedirection();
