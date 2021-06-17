@@ -27,10 +27,10 @@ namespace Backend.Repositories
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var performanceToDelete = await context.Performances.FindAsync(id);
-            if (performanceToDelete == null)
+            var reservationToDelete = await context.Reservations.FindAsync(id);
+            if (reservationToDelete == null)
                 return false;
-            var result = context.Performances.Remove(performanceToDelete);
+            var result = context.Reservations.Remove(reservationToDelete);
             await context.SaveChangesAsync();
             return true;
         }
