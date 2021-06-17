@@ -30,7 +30,7 @@ namespace Backend.Repositories
 
         public async Task<Hall> GetAsync(string letterCode)
         {
-            return await context.Halls.FirstOrDefaultAsync(h => h.HallLetter == letterCode);
+            return await context.Halls.Include(h => h.Performances).FirstOrDefaultAsync(h => h.HallLetter == letterCode);
         }
     }
 }
