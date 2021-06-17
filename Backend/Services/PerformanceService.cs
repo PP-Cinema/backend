@@ -27,6 +27,13 @@ namespace Backend.Services
         public async Task<IActionResult> CreateAsync(
             DateTime time, float normalPrice, float discountedPrice, string hall, string movie)
         {
+            var existingPerformance = await performanceRepository.GetAsync(time, hall);
+            if (existingPerformance != null)
+                return new JsonResult(new ExceptionDto {Message = "Performance with given time and hall already exist"})
+                {
+                    StatusCode = 422
+                };
+            
             var existingHall = await hallRepository.GetAsync(hall);
             if (existingHall == null)
                 return new JsonResult(new ExceptionDto {Message = "Hall with given letter does not exist"})
