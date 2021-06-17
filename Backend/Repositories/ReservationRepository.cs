@@ -37,7 +37,7 @@ namespace Backend.Repositories
 
         public async Task<Reservation> GetAsync(int id)
         {
-            return await context.Reservations.FindAsync(id);
+            return await context.Reservations.Include(reservation => reservation.Id == id).FirstOrDefaultAsync();
         }
     }
 }
