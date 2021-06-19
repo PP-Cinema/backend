@@ -9,5 +9,6 @@ namespace Backend.Services
         Task<IActionResult> CreateAsync(string title, string articleAbstract, IFormFile file, HttpRequest request);
         Task<IActionResult> GetAsync(int id);
         Task<IActionResult> GetAllAsync();
+        Task<IActionResult> DeleteAsync(int id);
     }
 }

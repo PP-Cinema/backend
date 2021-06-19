@@ -38,5 +38,14 @@ namespace Backend.Repositories
         {
             return await context.Articles.ToListAsync();
         }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var articleToDelete = await context.Articles.FindAsync(id);
+            if (articleToDelete == null) return false;
+            context.Articles.Remove(articleToDelete);
+            await context.SaveChangesAsync();
+            return true;
+        }
     }
 }

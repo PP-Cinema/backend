@@ -11,5 +11,6 @@ namespace Backend.Repositories
         Task<Article> GetAsync(int id);
 
         Task<IEnumerable<Article>> GetAllAsync();
+        Task<bool> DeleteAsync(int id);
     }
 }
