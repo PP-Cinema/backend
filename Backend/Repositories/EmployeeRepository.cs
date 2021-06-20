@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Backend.Data;
 using Backend.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +41,20 @@ namespace Backend.Repositories
         {
             return await context.Employees.FirstOrDefaultAsync(e =>
                 e.Login == login);
+        }
+
+        public async Task<ICollection<Employee>> GetAllAsync()
+        {
+            return await context.Employees.OrderBy(e=>e.Id).Include(e=>e.Admin).ToListAsync();
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var employeeToDelete = await context.Employees.FindAsync(id);
+            if (employeeToDelete == null) return false;
+            context.Employees.Remove(employeeToDelete);
+            await context.SaveChangesAsync();
+            return true;
         }
     }
 }

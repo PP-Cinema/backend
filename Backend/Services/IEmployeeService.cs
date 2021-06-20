@@ -9,5 +9,8 @@ namespace Backend.Services
         Task<IActionResult> AuthenticateAsync(string login, string password);
         Task<IActionResult> RefreshAsync(string accessToken, string refreshToken);
         Task<string> GetRolesAsync(string login);
+
+        Task<IActionResult> GetAllAsync();
+        Task<IActionResult> DeleteAsync(int id);
     }
 }

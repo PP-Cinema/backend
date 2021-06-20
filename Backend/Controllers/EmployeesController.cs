@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Backend.DTO;
 using Backend.Entities;
 using Backend.Services;
@@ -49,5 +50,23 @@ namespace Backend.Controllers
         {
             return await employeeService.RefreshAsync(refreshDto.AccessToken, refreshDto.RefreshToken);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(ICollection<Employee>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            return await employeeService.GetAllAsync();
+        }
+
+        [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            return await employeeService.DeleteAsync(id);
+        }
+        
+        
     }
 }
