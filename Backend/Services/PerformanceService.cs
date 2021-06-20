@@ -84,6 +84,11 @@ namespace Backend.Services
                 new JsonResult(existingPerformance){StatusCode = 200};
         }
 
+        public async Task<IActionResult> GetAllAsync()
+        {
+            return new JsonResult(await performanceRepository.GetAllAsync()) {StatusCode = 200};
+        }
+
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var existingPerformance = await performanceRepository.GetAsync(id);

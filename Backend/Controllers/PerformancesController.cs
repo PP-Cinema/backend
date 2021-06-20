@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Backend.DTO;
 using Backend.Entities;
 using Backend.Services;
@@ -35,6 +36,15 @@ namespace Backend.Controllers
         public async Task<IActionResult> GetPerformance(int id)
         {
             return await performanceService.GetAsync(id);
+        }
+        
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Performance>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> GetPerformancesAsync()
+        {
+            return await performanceService.GetAllAsync();
         }
         
         [HttpDelete("{id}")]

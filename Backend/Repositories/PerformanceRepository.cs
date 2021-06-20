@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Data;
@@ -40,6 +41,13 @@ namespace Backend.Repositories
             return await query
                 .Include(p => p.Hall).Include(p => p.Movie)
                 .FirstOrDefaultAsync(p => p.Hall.HallLetter == hall);
+        }
+
+        public async Task<IEnumerable<Performance>> GetAllAsync()
+        {
+            return await context.Performances
+                .Include(p => p.Hall).Include(p => p.Movie)
+                .ToListAsync();
         }
 
         public async Task<bool> DeleteAsync(int id)
