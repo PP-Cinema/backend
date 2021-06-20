@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Backend.Data;
 using Backend.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +31,23 @@ namespace Backend.Repositories
         public async Task<Performance> GetAsync(int id)
         {
             return await context.Performances.FindAsync(id);
+        }
+
+        public async Task<Performance> GetAsync(DateTime time, string hall)
+        {
+            var query = context.Performances
+                .Include(p => p.Hall).Include(p => p.Movie)
+                .Where(p => p.Date == time);
+            return await query
+                .Include(p => p.Hall).Include(p => p.Movie)
+                .FirstOrDefaultAsync(p => p.Hall.HallLetter == hall);
+        }
+
+        public async Task<IEnumerable<Performance>> GetAllAsync()
+        {
+            return await context.Performances
+                .Include(p => p.Hall).Include(p => p.Movie)
+                .ToListAsync();
         }
 
         public async Task<bool> DeleteAsync(int id)

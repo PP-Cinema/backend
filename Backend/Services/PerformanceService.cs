@@ -27,6 +27,13 @@ namespace Backend.Services
         public async Task<IActionResult> CreateAsync(
             DateTime time, float normalPrice, float discountedPrice, string hall, string movie)
         {
+            var existingPerformance = await performanceRepository.GetAsync(time, hall);
+            if (existingPerformance != null)
+                return new JsonResult(new ExceptionDto {Message = "Performance with given time and hall already exist"})
+                {
+                    StatusCode = 422
+                };
+            
             var existingHall = await hallRepository.GetAsync(hall);
             if (existingHall == null)
                 return new JsonResult(new ExceptionDto {Message = "Hall with given letter does not exist"})
@@ -75,6 +82,11 @@ namespace Backend.Services
             return existingPerformance == null ?
                 new JsonResult(new ExceptionDto{ Message = "No performance was found"}){ StatusCode = 422} : 
                 new JsonResult(existingPerformance){StatusCode = 200};
+        }
+
+        public async Task<IActionResult> GetAllAsync()
+        {
+            return new JsonResult(await performanceRepository.GetAllAsync()) {StatusCode = 200};
         }
 
         public async Task<IActionResult> DeleteAsync(int id)
