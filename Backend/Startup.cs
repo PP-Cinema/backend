@@ -23,6 +23,7 @@ namespace Backend
     public class Startup
     {
         private readonly IConfiguration Configuration;
+        private readonly string CorsPolicyName = "CinemaProject";
 
         public Startup(IConfiguration configuration)
         {
@@ -64,6 +65,12 @@ namespace Backend
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Backend", Version = "v1"}); });
+
+            services.AddCors(options =>
+                options.AddPolicy(name: CorsPolicyName, builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                }));
 
             services.AddTransient<IAdminRepository, AdminRepository>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
@@ -126,6 +133,8 @@ namespace Backend
                 RequestPath = "/posters"
             });
 
+            app.UseCors(CorsPolicyName);
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
