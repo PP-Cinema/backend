@@ -100,5 +100,15 @@ namespace Backend.Services
 
             return new JsonResult(createdEmployee) {StatusCode = 201};
         }
+
+        public async Task<IActionResult> GetAllAsync()
+        {
+            return new JsonResult(await employeeRepository.GetAllAsync()){StatusCode = 200};
+        }
+
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            return new JsonResult(await employeeRepository.DeleteAsync(id)){StatusCode = 200};
+        }
     }
 }
