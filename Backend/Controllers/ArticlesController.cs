@@ -47,5 +47,15 @@ namespace Backend.Controllers
         {
             return await articleService.GetAllAsync();
         }
+        
+        [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin,Employee")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            return await articleService.DeleteAsync(id);
+        }
     }
 }

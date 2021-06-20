@@ -86,6 +86,9 @@ namespace Backend
 
             services.AddTransient<IPerformanceRepository, PerformanceRepository>();
             services.AddTransient<IPerformanceService, PerformanceService>();
+            
+            services.AddTransient<IReservationRepository, ReservationRepository>();
+            services.AddTransient<IReservationService, ReservationService>();
           
             services.AddTransient<HallSeeder>();
             services.AddTransient<EmployeeSeeder>();
