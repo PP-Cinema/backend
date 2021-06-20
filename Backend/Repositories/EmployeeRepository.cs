@@ -45,7 +45,11 @@ namespace Backend.Repositories
 
         public async Task<ICollection<Employee>> GetAllAsync()
         {
-            return await context.Employees.OrderBy(e=>e.Id).Include(e=>e.Admin).ToListAsync();
+            return await context.Employees.
+                Include(e=>e.Admin).
+                    Select(e=> new Employee{ Login = e.Login,Id=e.Id, Admin = e.Admin}).
+                        OrderBy(e=>e.Id).
+                            ToListAsync();
         }
 
         public async Task<bool> DeleteAsync(int id)
