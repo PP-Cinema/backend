@@ -8,6 +8,7 @@ namespace Backend.Entities
         [Key] public int Id { get; set; }
         [Required] public string Title { get; set; }
         [Required] public int Length { get; set; }
+        public string Abstract { get; set; }
         public string Description { get; set; }
         [Required]
         public string PosterFilePath { get; set; }

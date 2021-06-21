@@ -24,7 +24,7 @@ namespace Backend.Services
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> CreateAsync(string title, int length, string description, IFormFile posterFile,
+        public async Task<IActionResult> CreateAsync(string title, int length, string movieAbstract, string description, IFormFile posterFile,
             HttpRequest request)
         {
             if (posterFile == null) return new JsonResult(new ExceptionDto {Message = "File not found"}) {StatusCode = 422};
@@ -58,6 +58,7 @@ namespace Backend.Services
             {
                 Title = title,
                 Length = length,
+                Abstract = movieAbstract,
                 Description = description,
                 PosterFilePath = request.Scheme + "://" + request.Host + "/posters/" + fileName +
                                  extension
@@ -79,10 +80,16 @@ namespace Backend.Services
             return new JsonResult(existingMovie) {StatusCode = 200};
         }
 
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var movies = await movieRepository.GetAllAsync();
+            return new JsonResult(movies) {StatusCode = 200};
+        }
+
         public async Task<IActionResult> GetPageAsync(int page, int itemsPerPage, string searchString)
         {
-            var movies = (await movieRepository.GetContainsAsync(searchString)).OrderByDescending(m => m.Title).ToList();
-            var moviesCount = movies.Count();
+            var movies = (await movieRepository.GetContainsAsync(searchString)).OrderByDescending(m => m.Performances.Count).ThenBy(m => m.Title).ToList();
+            var moviesCount = movies.Count;
             var startIndex = page * itemsPerPage;
             var itemsOnPage = itemsPerPage;
             if (moviesCount - startIndex < itemsPerPage)

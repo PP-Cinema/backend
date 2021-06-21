@@ -27,7 +27,7 @@ namespace Backend.Controllers
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> CreateAsync([FromForm] MovieDto movieDto)
         {
-            return await movieService.CreateAsync(movieDto.Title, movieDto.Length, movieDto.Description, movieDto.PosterFile, Request);
+            return await movieService.CreateAsync(movieDto.Title, movieDto.Length, movieDto.Abstract, movieDto.Description, movieDto.PosterFile, Request);
         }
 
         [HttpGet("{id:int}")]
@@ -39,11 +39,20 @@ namespace Backend.Controllers
             return await movieService.GetAsync(id);
         }
         
+        [HttpGet("all")]
+        [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            return await movieService.GetAllAsync();
+        }
+        
         [HttpGet]
         [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetAsyncPage([FromQuery] int page = -1, [FromQuery] int itemsPerPage = 10, [FromQuery] string search = "")
+        public async Task<IActionResult> GetPageAsync([FromQuery] int page = -1, [FromQuery] int itemsPerPage = 10, [FromQuery] string search = "")
         {
             if (page < 0)
             {
