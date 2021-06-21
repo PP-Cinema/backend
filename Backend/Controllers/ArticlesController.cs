@@ -27,7 +27,7 @@ namespace Backend.Controllers
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> CreateArticleAsync([FromForm] ArticleDto articleDto)
         {
-            return await articleService.CreateAsync(articleDto.Title, articleDto.Abstract, articleDto.File, Request);
+            return await articleService.CreateAsync(articleDto.Title, articleDto.Abstract, articleDto.ThumbnailFile, articleDto.File, Request);
         }
 
         [HttpGet("{id}")]

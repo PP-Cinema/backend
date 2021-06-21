@@ -10,6 +10,9 @@ namespace Backend.DTO
 
         [Required(ErrorMessage = "Abstract is required")]
         public string Abstract { get; set; }
+        
+        [Required(ErrorMessage = "Thumbnail is required")]
+        public IFormFile ThumbnailFile { get; set; }
 
         [Required(ErrorMessage = "File is required")]
         public IFormFile File { get; set; }

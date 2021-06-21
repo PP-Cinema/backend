@@ -9,6 +9,7 @@ namespace Backend.Entities
         [Required] public DateTime Date { get; set; }
         [Required] public string Title { get; set; }
         [Required] public string Abstract { get; set; }
+        [Required] public string ThumbnailFilePath { get; set; }
         [Required] public string FilePath { get; set; }
     }
 }

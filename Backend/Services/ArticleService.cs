@@ -25,7 +25,7 @@ namespace Backend.Services
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> CreateAsync(string title, string articleAbstract, IFormFile file,
+        public async Task<IActionResult> CreateAsync(string title, string articleAbstract, IFormFile thumbnailFile, IFormFile file,
             HttpRequest request)
         {
             if (file == null) return new JsonResult(new ExceptionDto {Message = "File not found"}) {StatusCode = 422};
@@ -34,17 +34,31 @@ namespace Backend.Services
 
             if (string.IsNullOrEmpty(extension) || extension != ".pdf")
                 return new JsonResult(new ExceptionDto {Message = "Wrong file extension"}) {StatusCode = 422};
+            
+            if (thumbnailFile == null) return new JsonResult(new ExceptionDto {Message = "Thumbnail file not found"}) {StatusCode = 422};
+            
+            var thumbnailExtension = Path.GetExtension(thumbnailFile.FileName);
+            if (string.IsNullOrEmpty(thumbnailExtension) || !(thumbnailExtension == ".png" || thumbnailExtension == ".jpg"))
+                return new JsonResult(new ExceptionDto {Message = "Wrong thumbnail file extension"}) {StatusCode = 422};
 
             var fileName = Path.GetRandomFileName();
             var path = Path.Combine(webHostEnvironment.WebRootPath, "articles", fileName + extension);
+            
+            var thumbnailFileName = Path.GetRandomFileName();
+            var thumbnailPath = Path.Combine(webHostEnvironment.WebRootPath, "articles", thumbnailFileName + thumbnailExtension);
 
             await using var fileStream = new FileStream(path, FileMode.Create);
             await file.CopyToAsync(fileStream);
+            
+            await using var thumbnailFileStream = new FileStream(thumbnailPath, FileMode.Create);
+            await thumbnailFile.CopyToAsync(thumbnailFileStream);
 
             var article = new Article
             {
                 Abstract = articleAbstract,
                 Date = DateTime.Now,
+                ThumbnailFilePath = request.Scheme + "://" + request.Host + "/articles/" + thumbnailFileName +
+                                    thumbnailExtension,
                 FilePath = request.Scheme + "://" + request.Host + "/articles/" + fileName +
                            extension,
                 Title = title
@@ -82,6 +96,11 @@ namespace Backend.Services
             var filePath = Path.Combine(webHostEnvironment.WebRootPath, "articles", fileName);
             if (File.Exists(filePath))
                 File.Delete(filePath);
+            
+            var thumbnailFileName = existingArticle.ThumbnailFilePath.Split('/').Last();
+            var thumbnailFilePath = Path.Combine(webHostEnvironment.WebRootPath, "articles", thumbnailFileName);
+            if (File.Exists(thumbnailFilePath))
+                File.Delete(thumbnailFilePath);
             
             context.Database?.CommitTransactionAsync();
 
