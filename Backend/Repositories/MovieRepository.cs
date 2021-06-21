@@ -34,7 +34,18 @@ namespace Backend.Repositories
 
         public async Task<Movie> GetAsync(int id)
         {
-            return await context.Movies.FindAsync(id);
+            return await context.Movies
+                .Include(m=>m.Performances).ThenInclude(p => p.Hall)
+                .Include(m=> m.Performances).ThenInclude(p=> p.Reservations)
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
+        
+        public async Task<IEnumerable<Movie>> GetAllAsync()
+        {
+            return await context.Movies
+                .Include(m => m.Performances).ThenInclude(p => p.Hall)
+                .Include(m => m.Performances).ThenInclude(p => p.Reservations)
+                .ToListAsync();
         }
 
         public async Task<Movie> GetAsync(string title)

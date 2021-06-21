@@ -10,7 +10,9 @@ namespace Backend.DTO
 
         [Required(ErrorMessage = "Length is required")]
         public int Length { get; set; }
-
+        
+        public string Abstract { get; set; }
+        
         public string Description { get; set; }
         
         [Required(ErrorMessage = "File is required")]
