@@ -88,8 +88,8 @@ namespace Backend.Services
 
         public async Task<IActionResult> GetPageAsync(int page, int itemsPerPage, string searchString)
         {
-            var movies = (await movieRepository.GetContainsAsync(searchString)).OrderByDescending(m => m.Title).ToList();
-            var moviesCount = movies.Count();
+            var movies = (await movieRepository.GetContainsAsync(searchString)).OrderByDescending(m => m.Performances.Count).ThenBy(m => m.Title).ToList();
+            var moviesCount = movies.Count;
             var startIndex = page * itemsPerPage;
             var itemsOnPage = itemsPerPage;
             if (moviesCount - startIndex < itemsPerPage)

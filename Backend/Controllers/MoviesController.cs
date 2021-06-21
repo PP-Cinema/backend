@@ -52,7 +52,7 @@ namespace Backend.Controllers
         [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetAsyncPage([FromQuery] int page = -1, [FromQuery] int itemsPerPage = 10, [FromQuery] string search = "")
+        public async Task<IActionResult> GetPageAsync([FromQuery] int page = -1, [FromQuery] int itemsPerPage = 10, [FromQuery] string search = "")
         {
             if (page < 0)
             {

@@ -80,6 +80,37 @@ namespace Backend.Services
             return new JsonResult(await articleRepository.GetAllAsync()) {StatusCode = 200};
         }
 
+        public async Task<IActionResult> GetPageAsync(int page, int itemsPerPage)
+        {
+            var articles = (await articleRepository.GetAllAsync()).ToList();
+            var articlesCount = articles.Count;
+            var startIndex = page * itemsPerPage;
+            var itemsOnPage = itemsPerPage;
+            if (articlesCount - startIndex < itemsPerPage)
+            {
+                itemsOnPage = articlesCount - startIndex;
+            }
+
+            if (startIndex < 0 || itemsOnPage <= 0)
+                return new JsonResult(new ExceptionDto {Message = "Page don't exist"}) {StatusCode = 422};
+            
+            var articlesOnPage = articles.GetRange(startIndex, itemsOnPage);
+            
+            return new JsonResult(articlesOnPage) {StatusCode = 200};
+        }
+
+        public async Task<IActionResult> GetPageCountAsync(int itemsPerPage)
+        {
+            if (itemsPerPage <= 0)
+            {
+                return new JsonResult(new ExceptionDto {Message = "Incorrect page count"}) {StatusCode = 422};
+            }
+            var articlesCount = (await articleRepository.GetAllAsync()).Count();
+            var pagesCount = articlesCount / itemsPerPage + (articlesCount%itemsPerPage == 0 ? 0 : 1);
+            
+            return new JsonResult(pagesCount) {StatusCode = 200};
+        }
+
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var existingArticle = await articleRepository.GetAsync(id);

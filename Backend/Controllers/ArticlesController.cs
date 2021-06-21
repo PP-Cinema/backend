@@ -39,13 +39,26 @@ namespace Backend.Controllers
             return await articleService.GetAsync(id);
         }
 
-        [HttpGet]
+        [HttpGet(template:"all")]
         [ProducesResponseType(typeof(IEnumerable<Article>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> GetArticlesAsync()
         {
             return await articleService.GetAllAsync();
+        }
+        
+        [HttpGet]
+        [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> GetPageAsync([FromQuery] int page = -1, [FromQuery] int itemsPerPage = 10)
+        {
+            if (page < 0)
+            {
+                return await articleService.GetPageCountAsync(itemsPerPage);
+            }
+            return await articleService.GetPageAsync(page, itemsPerPage);
         }
         
         [HttpDelete("{id:int}")]
