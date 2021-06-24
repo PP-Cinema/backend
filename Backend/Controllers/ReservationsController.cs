@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Backend.DTO;
 using Backend.Entities;
 using Backend.Services;
@@ -42,6 +43,14 @@ namespace Backend.Controllers
         public async Task<IActionResult> DeleteReservation(int id)
         {
             return await reservationService.DeleteAsync(id);
+        }
+
+        [HttpGet("all")]
+        [ProducesResponseType(typeof(Reservation), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> GetAllUsersReservations(string email, string lastName)
+        {
+            return await reservationService.GetAllUsersReservations(email, lastName);
         }
 
     }

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Backend.Data;
 using Backend.DTO;
 using Backend.Entities;
 using Backend.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Services
@@ -77,6 +79,18 @@ namespace Backend.Services
             context.Database?.BeginTransactionAsync();
             var result = await reservationRepository.DeleteAsync(id);
             context.Database?.CommitTransactionAsync();
+
+            return new JsonResult(result) {StatusCode = 200};
+        }
+
+        public async Task<IActionResult> GetAllUsersReservations(string email, string lastName)
+        {
+            if (email.Contains("") || lastName.Contains(""))
+                return new JsonResult(new ExceptionDto() {Message = "Missing value/s!"}) {StatusCode = 422};
+
+            var result = await reservationRepository.GetAllUsersReservationsAsync(email, lastName);
+            if(result == null)
+                return new JsonResult(new ExceptionDto() {Message = "No reservations found!"}) {StatusCode = 422};
 
             return new JsonResult(result) {StatusCode = 200};
         }
