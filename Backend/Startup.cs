@@ -83,6 +83,7 @@ namespace Backend
             services.AddTransient<IArticleService, ArticleService>();
             
             services.AddTransient<IHallRepository, HallsRepository>();
+            services.AddTransient<IHallService, HallService>();
 
             services.AddTransient<IPerformanceRepository, PerformanceRepository>();
             services.AddTransient<IPerformanceService, PerformanceService>();
