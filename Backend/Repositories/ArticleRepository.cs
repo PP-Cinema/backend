@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Backend.Data;
 using Backend.Entities;
@@ -36,7 +37,7 @@ namespace Backend.Repositories
 
         public async Task<IEnumerable<Article>> GetAllAsync()
         {
-            return await context.Articles.ToListAsync();
+            return await context.Articles.OrderByDescending((a)=>a.Date).ToListAsync();
         }
 
         public async Task<bool> DeleteAsync(int id)
