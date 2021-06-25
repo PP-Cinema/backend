@@ -48,6 +48,9 @@ namespace Backend.Services
                     StatusCode = 422
                 };
 
+            if (time.Kind != DateTimeKind.Local)
+                time = TimeZoneInfo.ConvertTimeFromUtc(time, TimeZoneInfo.Local);
+
             var performance = new Performance()
             {
                 Date = time,
