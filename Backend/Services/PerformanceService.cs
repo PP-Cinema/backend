@@ -48,6 +48,9 @@ namespace Backend.Services
                     StatusCode = 422
                 };
 
+            if (time.Kind != DateTimeKind.Local)
+                time = TimeZoneInfo.ConvertTimeFromUtc(time, TimeZoneInfo.Local);
+
             var performance = new Performance()
             {
                 Date = time,
@@ -58,16 +61,10 @@ namespace Backend.Services
                 Movie = existingMovie
             };
 
-            if (existingMovie.Performances == null)
-            {
-                existingMovie.Performances = new List<Performance>();
-            }
+            existingMovie.Performances ??= new List<Performance>();
             existingMovie.Performances.Add(performance);
 
-            if (existingHall.Performances == null)
-            {
-                existingHall.Performances = new List<Performance>();                
-            }
+            existingHall.Performances ??= new List<Performance>();
             existingHall.Performances.Add(performance);
 
             await movieRepository.UpdateAsync(existingMovie);
