@@ -37,7 +37,10 @@ namespace Backend.Repositories
         {
             var query = context.Performances
                 .Include(p => p.Hall).Include(p => p.Movie)
-                .Where(p => p.Date == time);
+                .Where(p => p.Date <= time);
+            query = query
+                .Include(p => p.Hall).Include(p => p.Movie)
+                .Where(p => p.Date.AddMinutes(p.Length) >= time);
             return await query
                 .Include(p => p.Hall).Include(p => p.Movie)
                 .FirstOrDefaultAsync(p => p.Hall.HallLetter == hall);
