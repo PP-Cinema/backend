@@ -11,6 +11,7 @@ namespace Backend.Services
         Task<IActionResult> GetAsync(int id);
 
         Task<IActionResult> DeleteAsync(int id);
+        Task<IActionResult> GetAllUsersReservations(string email, string lastName);
 
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Backend.Data;
 using Backend.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -39,5 +41,21 @@ namespace Backend.Repositories
         {
             return await context.Reservations.Include(reservation => reservation.Id == id).FirstOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<Reservation>> GetAllUsersReservationsAsync(string email, string lastName)
+        {
+            return await context.Reservations.Where(r => r.LastName == lastName).Where(r => r.Email == email)
+                .Include(r => r.Performance).ThenInclude(p => p.Hall)
+                .Include(p => p.Performance).ThenInclude( p => p.Movie)
+                .Select(r => new Reservation
+                {
+                    Id = r.Id,
+                    NormalTickets = r.NormalTickets,
+                    DiscountedTickets = r.DiscountedTickets,
+                    Performance = r.Performance
+                })
+                .ToListAsync();
+        }
+        
     }
 }
