@@ -39,7 +39,7 @@ namespace Backend.Repositories
 
         public async Task<Reservation> GetAsync(int id)
         {
-            return await context.Reservations.Include(reservation => reservation.Id == id).FirstOrDefaultAsync();
+            return await context.Reservations.Include(reservation => reservation.Id == id).Include(p => p.Seats).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Reservation>> GetAllUsersReservationsAsync(string email, string lastName)
@@ -47,6 +47,7 @@ namespace Backend.Repositories
             return await context.Reservations.Where(r => r.LastName == lastName).Where(r => r.Email == email)
                 .Include(r => r.Performance).ThenInclude(p => p.Hall)
                 .Include(p => p.Performance).ThenInclude( p => p.Movie)
+                .Include(p => p.Seats)
                 .Select(r => new Reservation
                 {
                     Id = r.Id,
