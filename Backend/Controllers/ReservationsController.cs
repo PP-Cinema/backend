@@ -21,7 +21,7 @@ namespace Backend.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Reservation), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> CreateReservation(ReservationDto reservationDto)
+        public async Task<IActionResult> CreateReservation([FromBody]ReservationDto reservationDto)
         {
             return await reservationService.CreateAsync(
                 reservationDto.Email, reservationDto.NormalTickets, reservationDto.DiscountedTickets,
@@ -48,7 +48,7 @@ namespace Backend.Controllers
         [HttpGet("all")]
         [ProducesResponseType(typeof(Reservation), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetAllUsersReservations(string email, string lastName)
+        public async Task<IActionResult> GetAllUsersReservations([FromQuery]string email,[FromQuery]string lastName)
         {
             return await reservationService.GetAllUsersReservations(email, lastName);
         }

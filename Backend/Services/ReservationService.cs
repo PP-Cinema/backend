@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Backend.Data;
 using Backend.DTO;
@@ -85,14 +86,11 @@ namespace Backend.Services
 
         public async Task<IActionResult> GetAllUsersReservations(string email, string lastName)
         {
-            if (email.Contains("") || lastName.Contains(""))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(lastName))
                 return new JsonResult(new ExceptionDto() {Message = "Missing value/s!"}) {StatusCode = 422};
 
             var result = await reservationRepository.GetAllUsersReservationsAsync(email, lastName);
-            if(result == null)
-                return new JsonResult(new ExceptionDto() {Message = "No reservations found!"}) {StatusCode = 422};
-
-            return new JsonResult(result) {StatusCode = 200};
+            return !result.Any() ? new JsonResult(new ExceptionDto() {Message = "No reservations found!"}) {StatusCode = 422} : new JsonResult(result) {StatusCode = 200};
         }
     }
 }

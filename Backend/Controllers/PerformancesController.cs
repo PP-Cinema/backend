@@ -24,7 +24,7 @@ namespace Backend.Controllers
         [Authorize(Roles = "Admin,Employee")]
         [ProducesResponseType(typeof(Performance), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> CreatePerformance(PerformanceDto performanceDto)
+        public async Task<IActionResult> CreatePerformance([FromForm]PerformanceDto performanceDto)
         {
             return await performanceService.CreateAsync(performanceDto.Date,
                 performanceDto.NormalPrice, performanceDto.DiscountedPrice,performanceDto.Hall, performanceDto.Movie);
