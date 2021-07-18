@@ -37,6 +37,7 @@ namespace Backend.Repositories
         {
             var query = context.Performances
                 .Include(p => p.Hall).Include(p => p.Movie)
+                .Include(p => p.Reservations).ThenInclude(r => r.Seats)
                 .Where(p => p.Date <= time);
             query = query
                 .Include(p => p.Hall).Include(p => p.Movie)
