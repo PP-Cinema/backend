@@ -91,6 +91,8 @@ namespace Backend
             services.AddTransient<IReservationRepository, ReservationRepository>();
             services.AddTransient<IReservationService, ReservationService>();
           
+            services.AddTransient<ISeatRepository, SeatRepository>();
+            
             services.AddTransient<HallSeeder>();
             services.AddTransient<EmployeeSeeder>();
             services.AddTransient<DbSeeder>();

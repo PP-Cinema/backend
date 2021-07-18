@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Entities
 {
@@ -12,5 +13,7 @@ namespace Backend.Entities
         [Required] public string LastName { get; set; }
         public string Remarks { get; set; }
         [Required] public Performance Performance { get; set; }
+        
+        [Required] public ICollection<Seat> Seats { get; set; }
     }
 }

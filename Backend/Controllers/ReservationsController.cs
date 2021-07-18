@@ -21,12 +21,12 @@ namespace Backend.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Reservation), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> CreateReservation([FromBody]ReservationDto reservationDto)
+        public async Task<IActionResult> CreateReservation([FromForm]ReservationDto reservationDto)
         {
             return await reservationService.CreateAsync(
                 reservationDto.Email, reservationDto.NormalTickets, reservationDto.DiscountedTickets,
                 reservationDto.FirstName, reservationDto.LastName, reservationDto.Remarks,
-                reservationDto.PerformanceId);
+                reservationDto.PerformanceId, reservationDto.Seats);
         }
 
         [HttpGet("{id:int}")]

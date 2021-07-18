@@ -25,5 +25,7 @@ namespace Backend.DTO
         
         public int PerformanceId { get; set; }
         
+        public string Seats { get; set; }
+        
     }
 }
