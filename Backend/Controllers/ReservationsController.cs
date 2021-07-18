@@ -48,7 +48,7 @@ namespace Backend.Controllers
         [HttpGet("all")]
         [ProducesResponseType(typeof(Reservation), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetAllUsersReservations(string email, string lastName)
+        public async Task<IActionResult> GetAllUsersReservations([FromQuery]string email,[FromQuery]string lastName)
         {
             return await reservationService.GetAllUsersReservations(email, lastName);
         }
