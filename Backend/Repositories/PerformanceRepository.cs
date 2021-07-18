@@ -33,6 +33,7 @@ namespace Backend.Repositories
             return await context.Performances
                 .Include(p => p.Hall)
                 .Include(p => p.Movie)
+                .Include(p => p.Reservations).ThenInclude(r => r.Seats)
                     .FirstOrDefaultAsync(p=> p.Id==id);
         }
 

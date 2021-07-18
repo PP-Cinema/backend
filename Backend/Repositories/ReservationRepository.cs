@@ -32,14 +32,18 @@ namespace Backend.Repositories
             var reservationToDelete = await context.Reservations.FindAsync(id);
             if (reservationToDelete == null)
                 return false;
-            var result = context.Reservations.Remove(reservationToDelete);
+            foreach (var seat in reservationToDelete.Seats)
+            {
+                context.Seats.Remove(seat);
+            }
+            context.Reservations.Remove(reservationToDelete);
             await context.SaveChangesAsync();
             return true;
         }
 
         public async Task<Reservation> GetAsync(int id)
         {
-            return await context.Reservations.Include(reservation => reservation.Id == id).Include(p => p.Seats).FirstOrDefaultAsync();
+            return await context.Reservations.Include(p => p.Seats).Where(reservation => reservation.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Reservation>> GetAllUsersReservationsAsync(string email, string lastName)
@@ -53,7 +57,8 @@ namespace Backend.Repositories
                     Id = r.Id,
                     NormalTickets = r.NormalTickets,
                     DiscountedTickets = r.DiscountedTickets,
-                    Performance = r.Performance
+                    Performance = r.Performance,
+                    Seats = r.Seats
                 })
                 .ToListAsync();
         }
