@@ -6,7 +6,7 @@ namespace Backend.Services
 {
     public interface IMovieService
     {
-        public Task<IActionResult> CreateAsync(string title, int length, string movieAbstract, string description, IFormFile posterFile, HttpRequest request);
+        public Task<IActionResult> CreateAsync(string title, int length, string movieAbstract, string description, IFormFile posterFile, string trailerLink, HttpRequest request);
         public Task<IActionResult> GetAsync(int id);
         public Task<IActionResult> GetAllAsync();
         public Task<IActionResult> GetPageAsync(int page, int itemsPerPage, string searchString);

@@ -27,7 +27,7 @@ namespace Backend.Controllers
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> CreateAsync([FromForm] MovieDto movieDto)
         {
-            return await movieService.CreateAsync(movieDto.Title, movieDto.Length, movieDto.Abstract, movieDto.Description, movieDto.PosterFile, Request);
+            return await movieService.CreateAsync(movieDto.Title, movieDto.Length, movieDto.Abstract, movieDto.Description, movieDto.PosterFile, movieDto.TrailerLink, Request);
         }
 
         [HttpGet("{id:int}")]
