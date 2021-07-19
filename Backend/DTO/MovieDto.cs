@@ -17,5 +17,7 @@ namespace Backend.DTO
         
         [Required(ErrorMessage = "File is required")]
         public IFormFile PosterFile { get; set; }
+        
+        public string TrailerLink { get; set; }
     }
 }

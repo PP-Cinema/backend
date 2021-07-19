@@ -24,7 +24,7 @@ namespace Backend.Services
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> CreateAsync(string title, int length, string movieAbstract, string description, IFormFile posterFile,
+        public async Task<IActionResult> CreateAsync(string title, int length, string movieAbstract, string description, IFormFile posterFile, string trailerLink,
             HttpRequest request)
         {
             if (posterFile == null) return new JsonResult(new ExceptionDto {Message = "File not found"}) {StatusCode = 422};
@@ -60,6 +60,7 @@ namespace Backend.Services
                 Length = length,
                 Abstract = movieAbstract,
                 Description = description,
+                TrailerLink = trailerLink,
                 PosterFilePath = request.Scheme + "://" + request.Host + "/posters/" + fileName +
                                  extension
             });

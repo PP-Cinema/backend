@@ -13,5 +13,7 @@ namespace Backend.Entities
         [Required]
         public string PosterFilePath { get; set; }
         public ICollection<Performance> Performances { get; set; }
+        
+        public string TrailerLink { get; set; }
     }
 }
