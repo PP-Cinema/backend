@@ -68,6 +68,18 @@ namespace Backend.Repositories
         {
             var movieToDelete = await context.Movies.FindAsync(id);
             if (movieToDelete == null) return false;
+            foreach (var performance in movieToDelete.Performances)
+            {
+                foreach (var reservation in performance.Reservations)
+                {
+                    foreach (var seat in reservation.Seats)
+                    {
+                        context.Seats.Remove(seat);
+                    }
+                    context.Reservations.Remove(reservation);
+                }
+                context.Performances.Remove(performance);
+            }
             context.Movies.Remove(movieToDelete);
             await context.SaveChangesAsync();
             return true;

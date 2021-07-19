@@ -62,9 +62,18 @@ namespace Backend.Repositories
         {
             var performanceToDelete = await context.Performances.FindAsync(id);
             if (performanceToDelete == null) return false;
+            foreach (var reservation in performanceToDelete.Reservations)
+            {
+                foreach (var seat in reservation.Seats)
+                {
+                    context.Seats.Remove(seat);
+                }
+                context.Reservations.Remove(reservation);
+            }
             context.Performances.Remove(performanceToDelete);
             await context.SaveChangesAsync();
             return true;
         }
+
     }
 }
