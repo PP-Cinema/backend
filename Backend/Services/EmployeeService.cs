@@ -54,7 +54,7 @@ namespace Backend.Services
             var login = accessData.Claims.Where(c => c.Type == ClaimTypes.Name).ToArray()[0].Value;
             var employee = await employeeRepository.GetAsync(login);
 
-            if (employee == null || !jwtManager.ContainsRefreshToken(refreshToken))
+            if (employee == null)
                 return new JsonResult(new ExceptionDto
                     {Message = "Employee with given login does not exist or refresh token is invalid"})
                 {
