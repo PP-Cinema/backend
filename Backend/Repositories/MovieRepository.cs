@@ -42,10 +42,22 @@ namespace Backend.Repositories
         
         public async Task<IEnumerable<Movie>> GetAllAsync()
         {
-            return await context.Movies
-                .Include(m => m.Performances).ThenInclude(p => p.Hall)
-                .Include(m => m.Performances).ThenInclude(p => p.Reservations)
+            var temp = await context.Movies
+                .Include(m => m.Performances).ThenInclude(p=>p.Hall)
+                .OrderBy(m=>m.Title)
                 .ToListAsync();
+            
+            
+            foreach (var m in temp)
+            {
+                var perfList = new List<Performance>();
+                perfList.AddRange(m.Performances.Select(p => 
+                    new Performance {Id = p.Id, Date = p.Date, Hall = new Hall {HallLetter = p.Hall.HallLetter}}));
+
+                m.Performances = perfList;
+            }
+
+            return temp;
         }
 
         public async Task<Movie> GetAsync(string title)
@@ -59,8 +71,8 @@ namespace Backend.Repositories
         public async Task<IEnumerable<Movie>> GetContainsAsync(string title)
         {
             return await context.Movies
-                .Include(m=>m.Performances).ThenInclude(p => p.Hall)
-                .Include(m=> m.Performances).ThenInclude(p=> p.Reservations)
+                .Include(m=>m.Performances)//.ThenInclude(p => p.Hall)
+                //.Include(m=> m.Performances).ThenInclude(p=> p.Reservations)
                 .Where(m => m.Title.Contains(title)).ToListAsync();
         }
 

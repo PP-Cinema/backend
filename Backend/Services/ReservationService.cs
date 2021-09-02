@@ -117,7 +117,7 @@ namespace Backend.Services
                 return new JsonResult(new ExceptionDto() {Message = "Missing value/s!"}) {StatusCode = 422};
 
             var result = await reservationRepository.GetAllUsersReservationsAsync(email, lastName);
-            return !result.Any() ? new JsonResult(new ExceptionDto() {Message = "No reservations found!"}) {StatusCode = 422} : new JsonResult(result) {StatusCode = 200};
+            return new JsonResult(result) {StatusCode = 200};
         }
     }
 }
