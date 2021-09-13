@@ -365,8 +365,7 @@ MigrationBackup/
 
 appsettings.Development.json
 
-<<<<<<< Updated upstream
+
 Backend/Migrations/*
-=======
-Backend/Migrations/*
->>>>>>> Stashed changes
+Backend/wwwroot/articles/*
+Backend/wwwroot/posters/*

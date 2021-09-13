@@ -1,66 +1,66 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Backend.DTO;
 using Backend.Entities;
 using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MoviesController : ControllerBase
+    public class ArticlesController : ControllerBase
     {
-        private readonly IMovieService movieService;
+        private readonly IArticleService articleService;
 
-        public MoviesController(IMovieService movieService)
+        public ArticlesController(IArticleService articleService)
         {
-            this.movieService = movieService;
+            this.articleService = articleService;
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin,Employee")]
-        [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Article), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> CreateAsync([FromForm] MovieDto movieDto)
+        public async Task<IActionResult> CreateArticleAsync([FromForm] ArticleDto articleDto)
         {
-            return await movieService.CreateAsync(movieDto.Title, movieDto.Length, movieDto.Abstract, movieDto.Description, movieDto.PosterFile, movieDto.TrailerLink, Request);
+            return await articleService.CreateAsync(articleDto.Title, articleDto.Abstract, articleDto.ThumbnailFile, articleDto.File, Request);
         }
 
-        [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Article), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetAsync(int id)
+        public async Task<IActionResult> GetArticleAsync(int id)
         {
-            return await movieService.GetAsync(id);
+            return await articleService.GetAsync(id);
         }
-        
-        [HttpGet("all")]
-        [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
+
+        [HttpGet(template:"all")]
+        [ProducesResponseType(typeof(IEnumerable<Article>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetArticlesAsync()
         {
-            return await movieService.GetAllAsync();
+            return await articleService.GetAllAsync();
         }
         
         [HttpGet]
         [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetPageAsync([FromQuery] int page = -1, [FromQuery] int itemsPerPage = 10, [FromQuery] string search = "")
+        public async Task<IActionResult> GetPageAsync([FromQuery] int page = -1, [FromQuery] int itemsPerPage = 10)
         {
             if (page < 0)
             {
-                return await movieService.GetPageCountAsync(itemsPerPage, search);
+                return await articleService.GetPageCountAsync(itemsPerPage);
             }
-            return await movieService.GetPageAsync(page, itemsPerPage, search);
+            return await articleService.GetPageAsync(page, itemsPerPage);
         }
-
+        
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin,Employee")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
@@ -68,7 +68,7 @@ namespace Backend.Controllers
         [ProducesResponseType(typeof(ExceptionDto), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            return await movieService.DeleteAsync(id);
+            return await articleService.DeleteAsync(id);
         }
     }
 }

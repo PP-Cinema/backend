@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using System.Text;
 using Backend.Data;
+using Backend.Data.DataSeeders;
 using Backend.Repositories;
 using Backend.Services;
 using Backend.Utilities;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -20,6 +23,7 @@ namespace Backend
     public class Startup
     {
         private readonly IConfiguration Configuration;
+        private readonly string CorsPolicyName = "CinemaProject";
 
         public Startup(IConfiguration configuration)
         {
@@ -62,6 +66,12 @@ namespace Backend
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Backend", Version = "v1"}); });
 
+            services.AddCors(options =>
+                options.AddPolicy(name: CorsPolicyName, builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                }));
+
             services.AddTransient<IAdminRepository, AdminRepository>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddTransient<IEmployeeService, EmployeeService>();
@@ -69,8 +79,26 @@ namespace Backend
             services.AddTransient<IMovieRepository, MovieRepository>();
             services.AddTransient<IMovieService, MovieService>();
 
-            services.AddTransient<IJwtManager, JwtManager>();
+            services.AddTransient<IArticleRepository, ArticleRepository>();
+            services.AddTransient<IArticleService, ArticleService>();
+            
+            services.AddTransient<IHallRepository, HallsRepository>();
+            services.AddTransient<IHallService, HallService>();
+
+            services.AddTransient<IPerformanceRepository, PerformanceRepository>();
+            services.AddTransient<IPerformanceService, PerformanceService>();
+            
+            services.AddTransient<IReservationRepository, ReservationRepository>();
+            services.AddTransient<IReservationService, ReservationService>();
+          
+            services.AddTransient<ISeatRepository, SeatRepository>();
+            
             services.AddTransient<HallSeeder>();
+            services.AddTransient<EmployeeSeeder>();
+            services.AddTransient<DbSeeder>();
+
+
+            services.AddTransient<IJwtManager, JwtManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,6 +111,36 @@ namespace Backend
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend v1"));
             }
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.WebRootPath, "articles")),
+                RequestPath = "/articles"
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.WebRootPath, "articles")),
+                RequestPath = "/articles"
+            });
+            
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.WebRootPath, "posters")),
+                RequestPath = "/posters"
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.WebRootPath, "posters")),
+                RequestPath = "/posters"
+            });
+
+            app.UseCors(CorsPolicyName);
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

@@ -2,7 +2,7 @@
 using System.Linq;
 using Backend.Entities;
 
-namespace Backend.Data
+namespace Backend.Data.DataSeeders
 {
     public class HallSeeder
     {
@@ -30,7 +30,7 @@ namespace Backend.Data
                 new Hall {HallLetter = "A", Seats = 100},
                 new Hall {HallLetter = "B", Seats = 120},
                 new Hall {HallLetter = "C", Seats = 80},
-                new Hall {HallLetter = "D", Seats = 125},
+                new Hall {HallLetter = "D", Seats = 120},
                 new Hall {HallLetter = "E", Seats = 130},
                 new Hall {HallLetter = "F", Seats = 200},
                 new Hall {HallLetter = "G", Seats = 120},
